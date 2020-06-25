@@ -7,8 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
-from models import db
-#from models import Person
+from models import db, Business, Visit, Visitor
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -28,14 +27,34 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/hello', methods=['POST', 'GET'])
+
+# @app.route('/visit', methods=['GET'])
+# def handle_hello():
+
+#     response_body = {
+#         "msg": "saved succesfully"
+#     }
+#     #body = response.body
+#     return jsonify(response_body), 200
+
+
+@app.route('/visit', methods=['POST'])
 def handle_hello():
 
     response_body = {
-        "hello": "world"
+        "msg": "saved succesfully"
     }
-
+    #body = response.body
     return jsonify(response_body), 200
+
+
+
+#@app.route('/visit/<int:position>', methods=['DELETE'])
+# def delete_info(position):
+#     if request.method == 'DELETE':
+#         visit.pop(position-1)
+#         print(f"This is the position to delete: {position}")
+#         return jsonify(visit)
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
