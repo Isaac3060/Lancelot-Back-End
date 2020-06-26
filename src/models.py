@@ -8,7 +8,7 @@ class Business(db.Model):
      address = db.Column(db.String(120), unique=False, nullable=False)
      phone_number = db.Column(db.String(120), unique=False, nullable=False)
      email = db.Column(db.String(120), unique=True, nullable=False)
-     password = db.Column(db.String(120), unique=True, nullable=False)#
+     password = db.Column(db.String(120), unique=False, nullable=False)#
      visitors = db.relationship("Visit")
 
      def __repr__(self):
@@ -52,9 +52,9 @@ class Visit(db.Model):
     image = db.Column(db.String(120), unique=True, nullable=False)
     business_id = db.Column(db.Integer, db.ForeignKey(Business.id))
     visitor_id = db.Column(db.Integer, db.ForeignKey(Visitor.id),nullable=False)
-    entry = db.Column(db.DateTime(120), unique=False, nullable=False)
-    status = db.Column(db.Boolean(), unique=False, nullable=False, default="no fever")#
-    result = db.Column(db.Boolean (), unique=False, nullable=False , default="negative")#
+    entry_date = db.Column(db.DateTime(120), unique=False, nullable=False)
+    has_fever = db.Column(db.Boolean(), unique=False, nullable=False, default=False)#
+    has_covid = db.Column(db.Boolean (), unique=False, nullable=False , default=False)#
     
     def __repr__(self):
         return '<Visit %r>' % self.image

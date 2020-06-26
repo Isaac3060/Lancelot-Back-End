@@ -2,12 +2,14 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+from flask_admin.contrib.sqla import ModelView
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from models import db, Business, Visit, Visitor
+from admin import setup_admin
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -16,6 +18,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db)
 db.init_app(app)
 CORS(app)
+setup_admin(app)
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
@@ -28,25 +31,31 @@ def sitemap():
     return generate_sitemap(app)
 
 
-# @app.route('/visit', methods=['GET'])
-# def handle_hello():
+#  @app.route('/visit', methods=['GET'])
+#  def visit_info():
 
-#     response_body = {
-#         "msg": "saved succesfully"
-#     }
-#     #body = response.body
-#     return jsonify(response_body), 200
+#     request_body= request.get_json()
+#     print(request_body)
+#     return jsonify(request_body),200
 
 
 @app.route('/visit', methods=['POST'])
-def handle_hello():
+def signup():
+    request_body= request.get_json()
+    print(request_body)
 
-    response_body = {
-        "msg": "saved succesfully"
-    }
-    #body = response.body
-    return jsonify(response_body), 200
+    business1 = Business(
+        business_name=request_body["business_name"],
+        address=request_body["address"],
+        phone_number=request_body["phone_number"],
+        email=request_body["email"],
+        password=request_body["password"],
+    )
 
+    db.session.add(business1)
+    db.session.commit()
+
+    return jsonify(request_body),200
 
 
 #@app.route('/visit/<int:position>', methods=['DELETE'])
