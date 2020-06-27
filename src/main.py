@@ -37,9 +37,20 @@ def get_all_business():
         payload = list(map(lambda biz: biz.serialize(), businessList))
         return jsonify(payload), 200
 
+@app.route('/visit', methods=['GET'])
+def get_all_visit():
+        visitList = Visit.query.all()
+        payload = list(map(lambda biz: biz.serialize(), visitList))
+        return jsonify(payload), 200
+
+@app.route('/visitor', methods=['GET'])
+def get_all_visitor():
+        visitorList = Visitor.query.all()
+        payload = list(map(lambda biz: biz.serialize(), visitorList))
+        return jsonify(payload), 200
 
 @app.route('/business', methods=['POST'])
-def signup():
+def signup_business():
     request_body= request.get_json()
     print(request_body)
 
@@ -50,12 +61,45 @@ def signup():
         email=request_body["email"],
         password=request_body["password"],
     )
-
     db.session.add(business1)
     db.session.commit()
-
     return jsonify(request_body),200
 
+
+@app.route('/visit', methods=['POST'])
+def signup_visit():
+    request_body= request.get_json()
+    print(request_body)
+
+    visit1 = Visit(
+        image=request_body["image"],
+        business_id=request_body["address"],
+        visitor_id=request_body["visit_id"],
+        entry_date=request_body["entry_date"],
+        has_fever=request_body["has_fever"],
+        has_covid=request_body["Has_covid"],
+    )
+    db.session.add(visit1)
+    db.session.commit()
+    return jsonify(request_body),200
+
+
+@app.route('/visitor', methods=['POST'])
+def signup_visitor():
+    request_body= request.get_json()
+    print(request_body)
+
+    visitor1 = Visitor(
+        first_name=request_body["first_name"],
+        last_name=request_body["last_name"],
+        age=request_body["age"],
+        address=request_body["address"],
+        phone_number=request_body["phone_number"],
+        email=request_body["email"],
+    )
+    db.session.add(visitor1)
+    db.session.commit()
+    return jsonify(request_body),200
 
 @app.route('/business/<int:business_id>', methods=['PUT'])
 def update_info(business_id):

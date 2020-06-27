@@ -25,7 +25,7 @@ class Business(db.Model):
 
 class Visitor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=False, nullable=False)
+    first_name = db.Column(db.String(120), unique=False, nullable=False)
     last_name = db.Column(db.String(120), unique=False, nullable=False)
     age = db.Column(db.String(80), unique=False, nullable=False)
     address = db.Column(db.String(120), unique=False, nullable=False)
