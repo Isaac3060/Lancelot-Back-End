@@ -20,7 +20,8 @@ class Business(db.Model):
             "business_name": self.business_name,
             "address": self.address,
             "phone_number": self.phone_number,
-            "email": self.email
+            "email": self.email,
+            "visitors": list(map(lambda x: x.serialize(), self.visitors))
         }
 
 class Visitor(db.Model):
@@ -44,7 +45,8 @@ class Visitor(db.Model):
             "age": self.age,
             "address": self.address,
             "phone_number": self.phone_number,
-            "email": self.email
+            "email": self.email,
+            "visit": list(map(lambda x: x.serialize(), self.visits))
         }
 
 class Visit(db.Model):
