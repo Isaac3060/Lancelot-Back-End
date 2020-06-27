@@ -31,12 +31,11 @@ def sitemap():
     return generate_sitemap(app)
 
 
-#  @app.route('/visit', methods=['GET'])
-#  def visit_info():
-
-#     request_body= request.get_json()
-#     print(request_body)
-#     return jsonify(request_body),200
+@app.route('/business', methods=['GET'])
+def get_all_business():
+        businessList = Business.query.all()
+        payload = list(map(lambda biz: biz.serialize(), businessList))
+        return jsonify(payload), 200
 
 
 @app.route('/business', methods=['POST'])
@@ -67,7 +66,6 @@ def update_info(business_id):
         db.session.commit()
         return jsonify(business_1.serialize()), 200    
         
-
 
 @app.route('/business/<int:business_id>', methods=['DELETE'])
 def delete_info(business_id):
