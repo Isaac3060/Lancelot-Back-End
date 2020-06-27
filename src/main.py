@@ -77,7 +77,7 @@ def signup_visit():
         visitor_id=request_body["visitor_id"],
         entry_date=request_body["entry_date"],
         has_fever=request_body["has_fever"],
-        has_covid=request_body["Has_covid"],
+        has_covid=request_body["has_covid"],
     )
     db.session.add(visit1)
     db.session.commit()
