@@ -9,7 +9,7 @@ class Business(db.Model):
      phone_number = db.Column(db.String(120), unique=False, nullable=False)
      email = db.Column(db.String(120), unique=True, nullable=False)
      password = db.Column(db.String(120), unique=False, nullable=False)#
-     visitors = db.relationship("Visit")
+     visits = db.relationship("Visit")
 
      def __repr__(self):
         return '<Business %r>' % self.business_name
