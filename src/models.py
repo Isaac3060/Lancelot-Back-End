@@ -64,7 +64,7 @@ class Visit(db.Model):
             "id": self.id,
             "image": self.image,
             "entry": self.entry,
-            "status": self.status,
-            "result": self.result
+            "has_fever": self.status,
+            "has_covid": self.result
             
         }
