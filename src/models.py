@@ -67,5 +67,7 @@ class Visit(db.Model):
             "image": self.image,
             "entry_date": self.entry_date,
             "has_fever": self.has_fever,
-            "has_covid": self.has_covid  
+            "has_covid": self.has_covid,
+            "business_id": self.business_id,
+            "visitor_id": self.visitor_id
         }
