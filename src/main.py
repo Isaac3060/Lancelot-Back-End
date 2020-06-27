@@ -39,7 +39,7 @@ def sitemap():
 #     return jsonify(request_body),200
 
 
-@app.route('/visit', methods=['POST'])
+@app.route('/business', methods=['POST'])
 def signup():
     request_body= request.get_json()
     print(request_body)
@@ -58,9 +58,20 @@ def signup():
     return jsonify(request_body),200
 
 
-#@app.route('/visit/<int:position>', methods=['DELETE'])
-# def delete_info(position):
-#     if request.method == 'DELETE':
+@app.route('/business/<int:business_id>', methods=['PUT'])
+def update_info(business_id):
+        request_body= request.get_json()
+        print(request_body)
+        business_1 = Business.query.get(business_id)
+        business_1.email = request_body["email"]
+        db.session.commit()
+        return jsonify(business_1.serialize()), 200    
+        
+
+
+
+#@app.route('/visit/<int:visit_id>', methods=['DELETE'])
+# def delete_info(visit_id):
 #         visit.pop(position-1)
 #         print(f"This is the position to delete: {position}")
 #         return jsonify(visit)
