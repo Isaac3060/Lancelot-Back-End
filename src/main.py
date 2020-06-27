@@ -69,12 +69,17 @@ def update_info(business_id):
         
 
 
-
-#@app.route('/visit/<int:visit_id>', methods=['DELETE'])
-# def delete_info(visit_id):
-#         visit.pop(position-1)
-#         print(f"This is the position to delete: {position}")
-#         return jsonify(visit)
+@app.route('/business/<int:business_id>', methods=['DELETE'])
+def delete_info(business_id):
+        request_body= request.get_json()
+        print(request_body)
+        business_to_delete = Business.query.get(business_id)
+        if business_to_delete is None:
+            raise APIException('User not found', status_code=404)
+        else:
+            db.session.delete(business_to_delete)
+            db.session.commit()
+            return jsonify(business_to_delete.serialize()), 204
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
