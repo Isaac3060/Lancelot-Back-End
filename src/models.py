@@ -34,12 +34,12 @@ class Visitor(db.Model):
     visits = db.relationship("Visit")
 
     def __repr__(self):
-        return '<Visitor %r>' % self.name
+        return '<Visitor %r>' % self.first_name
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "first_name": self.first_name,
             "last_name": self.last_name,
             "age": self.age,
             "address": self.address,
