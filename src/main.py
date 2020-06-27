@@ -73,8 +73,8 @@ def signup_visit():
 
     visit1 = Visit(
         image=request_body["image"],
-        business_id=request_body["address"],
-        visitor_id=request_body["visit_id"],
+        business_id=request_body["business_id"],
+        visitor_id=request_body["visitor_id"],
         entry_date=request_body["entry_date"],
         has_fever=request_body["has_fever"],
         has_covid=request_body["Has_covid"],
