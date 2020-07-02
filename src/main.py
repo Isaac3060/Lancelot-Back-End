@@ -10,7 +10,15 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from models import db, Business, Visit, Visitor
 from admin import setup_admin
+<<<<<<< HEAD
 from flask_jwt_simple import JWTManager, jwt_required, create_jwt, get_jwt_identity
+=======
+from flask_jwt_simple import (
+    JWTManager, jwt_required, create_jwt, get_jwt_identity
+)
+app.config['JWT_SECRET_KEY'] = 'super-secret'  
+jwt = JWTManager(app)
+>>>>>>> 080089702edf8ea0d036a67a1e4813f3d33c1b1e
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = os.environ.get ('jwt_secret_key')  
 jwt = JWTManager(app)
@@ -32,7 +40,11 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+<<<<<<< HEAD
 @app.route('/token', methods=['POST'])    
+=======
+@app.route('/login', methods=['POST'])
+>>>>>>> 080089702edf8ea0d036a67a1e4813f3d33c1b1e
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -55,11 +67,19 @@ def login():
         }
     return jsonify(ret), 200
 
+<<<<<<< HEAD
 # @app.route('/protected', methods=['GET'])
 # @jwt_required
 # def protected():
 #     Access the identity of the current user with get_jwt_identity
 #     return jsonify({'hello_from': get_jwt_identity()}), 200
+=======
+@app.route('/protected', methods=['GET'])
+@jwt_required
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    return jsonify({'hello_from': get_jwt_identity()}), 200
+>>>>>>> 080089702edf8ea0d036a67a1e4813f3d33c1b1e
 
 # if __name__ == '__main__':
 #     app.run()
