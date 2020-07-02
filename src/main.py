@@ -16,7 +16,7 @@ from flask_jwt_simple import JWTManager, jwt_required, create_jwt, get_jwt_ident
 from flask_jwt_simple import (
     JWTManager, jwt_required, create_jwt, get_jwt_identity
 )
-app.config['JWT_SECRET_KEY'] = 'super-secret'  
+app.config['JWT_SECRET_KEY'] = 'jwt_secret_key'  
 jwt = JWTManager(app)
 >>>>>>> 080089702edf8ea0d036a67a1e4813f3d33c1b1e
 app = Flask(__name__)
