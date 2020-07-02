@@ -10,7 +10,11 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from models import db, Business, Visit, Visitor
 from admin import setup_admin
-
+from flask_jwt_simple import (
+    JWTManager, jwt_required, create_jwt, get_jwt_identity
+)
+app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+jwt = JWTManager(app)
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
@@ -29,6 +33,34 @@ def handle_invalid_usage(error):
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
+
+def login():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    params = request.get_json()
+    email = params.get('email', None)
+    password = params.get('password', None)
+
+    if not username:
+        return jsonify({"msg": "Missing email parameter"}), 400
+    if not password:
+        return jsonify({"msg": "Missing password parameter"}), 400
+
+    if username != 'test' or password != 'test':
+        return jsonify({"msg": "Bad email or password"}), 401
+
+    ret = {'jwt': create_jwt(identity=email)}
+    return jsonify(ret), 200
+
+    @app.route('/protected', methods=['GET'])
+@jwt_required
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    return jsonify({'hello_from': get_jwt_identity()}), 200
+
+if __name__ == '__main__':
+    app.run()
 
 
 @app.route('/business', methods=['GET'])
