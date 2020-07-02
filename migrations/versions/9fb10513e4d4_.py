@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: f1935927c28c
+Revision ID: 9fb10513e4d4
 Revises: 
-Create Date: 2020-06-25 23:36:09.851581
+Create Date: 2020-07-02 20:02:59.277843
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f1935927c28c'
+revision = '9fb10513e4d4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,12 +26,11 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password', sa.String(length=120), nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('password')
+    sa.UniqueConstraint('email')
     )
     op.create_table('visitor',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=120), nullable=False),
+    sa.Column('first_name', sa.String(length=120), nullable=False),
     sa.Column('last_name', sa.String(length=120), nullable=False),
     sa.Column('age', sa.String(length=80), nullable=False),
     sa.Column('address', sa.String(length=120), nullable=False),
@@ -45,9 +44,9 @@ def upgrade():
     sa.Column('image', sa.String(length=120), nullable=False),
     sa.Column('business_id', sa.Integer(), nullable=True),
     sa.Column('visitor_id', sa.Integer(), nullable=False),
-    sa.Column('entry', sa.DateTime(timezone=120), nullable=False),
-    sa.Column('status', sa.Boolean(), nullable=False),
-    sa.Column('result', sa.Boolean(), nullable=False),
+    sa.Column('entry_date', sa.DateTime(timezone=120), nullable=False),
+    sa.Column('has_fever', sa.Boolean(), nullable=False),
+    sa.Column('has_covid', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['business_id'], ['business.id'], ),
     sa.ForeignKeyConstraint(['visitor_id'], ['visitor.id'], ),
     sa.PrimaryKeyConstraint('id'),
