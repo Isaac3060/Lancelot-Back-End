@@ -10,12 +10,10 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from models import db, Business, Visit, Visitor
 from admin import setup_admin
-from flask_jwt_simple import (
-    JWTManager, jwt_required, create_jwt, get_jwt_identity
-)
-app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
-jwt = JWTManager(app)
+from flask_jwt_simple import JWTManager, jwt_required, create_jwt, get_jwt_identity
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = os.environ.get ('jwt_secret_key')  
+jwt = JWTManager(app)
 app.url_map.strict_slashes = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -34,6 +32,7 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+@app.route('/token', methods=['POST'])    
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -42,25 +41,28 @@ def login():
     email = params.get('email', None)
     password = params.get('password', None)
 
-    if not username:
+    if not email:
         return jsonify({"msg": "Missing email parameter"}), 400
     if not password:
         return jsonify({"msg": "Missing password parameter"}), 400
-
-    if username != 'test' or password != 'test':
+    user= Business.query.filter_by(email=email, password= password).first()
+    if user is None:
         return jsonify({"msg": "Bad email or password"}), 401
 
-    ret = {'jwt': create_jwt(identity=email)}
+    ret = {
+        'jwt': create_jwt(identity=user.id),
+        "business_id": user.id
+        }
     return jsonify(ret), 200
 
-    @app.route('/protected', methods=['GET'])
-@jwt_required
-def protected():
-    # Access the identity of the current user with get_jwt_identity
-    return jsonify({'hello_from': get_jwt_identity()}), 200
+# @app.route('/protected', methods=['GET'])
+# @jwt_required
+# def protected():
+#     Access the identity of the current user with get_jwt_identity
+#     return jsonify({'hello_from': get_jwt_identity()}), 200
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
 
 
 @app.route('/business', methods=['GET'])
@@ -132,6 +134,15 @@ def signup_visitor():
     db.session.add(visitor1)
     db.session.commit()
     return jsonify(request_body),200
+
+@app.route('/visitor/<int:visitor_id>', methods=['PUT'])
+def update_visitor_info(visitor_id):
+        request_body= request.get_json()
+        print(request_body)
+        visitor_1 = Visitor.query.get(visitor_id)
+        visitor_1.email = request_body["email"]
+        db.session.commit()
+        return jsonify(visitor_1.serialize()), 200  
 
 @app.route('/business/<int:business_id>', methods=['PUT'])
 def update_info(business_id):
