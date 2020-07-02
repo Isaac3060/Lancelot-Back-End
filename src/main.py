@@ -13,7 +13,7 @@ from admin import setup_admin
 from flask_jwt_simple import (
     JWTManager, jwt_required, create_jwt, get_jwt_identity
 )
-app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+app.config['JWT_SECRET_KEY'] = 'super-secret'  
 jwt = JWTManager(app)
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -34,6 +34,7 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+@app.route('/login', methods=['POST'])
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -53,7 +54,7 @@ def login():
     ret = {'jwt': create_jwt(identity=email)}
     return jsonify(ret), 200
 
-    @app.route('/protected', methods=['GET'])
+@app.route('/protected', methods=['GET'])
 @jwt_required
 def protected():
     # Access the identity of the current user with get_jwt_identity
