@@ -52,6 +52,7 @@ class Visitor(db.Model):
 class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.String(120), unique=True, nullable=False)
+    temperature = db.Column(db.String(120), unique=True, nullable=False)
     business_id = db.Column(db.Integer, db.ForeignKey(Business.id))
     visitor_id = db.Column(db.Integer, db.ForeignKey(Visitor.id),nullable=False)
     entry_date = db.Column(db.DateTime(120), unique=False, nullable=False)
@@ -64,7 +65,7 @@ class Visit(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "image": self.image,
+            "temperature":self.temperature,
             "entry_date": self.entry_date,
             "has_fever": self.has_fever,
             "has_covid": self.has_covid,
