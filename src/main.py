@@ -37,7 +37,7 @@ def sitemap():
     return generate_sitemap(app)
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/token', methods=['POST'])
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400

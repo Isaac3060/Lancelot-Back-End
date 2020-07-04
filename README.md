@@ -1,4 +1,6 @@
 # Flask Boilerplate for Profesional Development
+# WARNING 
+> remember to always create the jwt variable in the .env file
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
