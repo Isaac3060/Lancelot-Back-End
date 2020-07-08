@@ -16,11 +16,11 @@ from flask_jwt_simple import (
 )
 
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = os.environ.get ('jwt_secret_key')  
-jwt = JWTManager(app)
 app.url_map.strict_slashes = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = 'leisy' 
+jwt = JWTManager(app)
 MIGRATE = Migrate(app, db)
 db.init_app(app)
 CORS(app)
