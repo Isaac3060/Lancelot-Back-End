@@ -79,9 +79,9 @@ def get_all_visit():
         return jsonify(payload), 200
 
 @app.route('/visitor', methods=['GET'])
-def get_all_visitor():
-        visitorList = Visitor.query.all()
-        payload = list(map(lambda biz: biz.serialize(), visitorList))
+def get_all_visitors():
+        visitorsList = Visitor.query.all()
+        payload = list(map(lambda biz: biz.serialize(), visitorsList))
         return jsonify(payload), 200
 
 @app.route('/business', methods=['POST'])
@@ -120,7 +120,7 @@ def signup_visit():
 
 
 @app.route('/visitor', methods=['POST'])
-def signup_visitor():
+def create_new_visitor():
     request_body= request.get_json()
     print(request_body)
 
