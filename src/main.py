@@ -64,26 +64,31 @@ def login():
 
 # if __name__ == '__main__':
 #     app.run()
-@app.route('/render_bar_chart', methods=['GET'])
+@app.route('/render-bar-chart', methods=['GET'])
 def get_bar_chart():
     payload = []
-    positiveList = Visit.query.filter (
-        has_covid == True,
-        visitor.age <= 19
-    )
-        
-    data = {"name": "0-19", "positive":len(positiveList)}
-    payload.push (data)
-
-        
-    positiveList = Visit.query.filter (
-        has_covid == True,
-        visitor.age > 19 and visitor.age <=44
-    )
-        
-    data = {"name": "20-44", "positive":len(positiveList)}
-    payload.push (data)
-
+    # age sets for loop, tuples with min age and max age for each set
+    age_sets = [(0, 19), (19, 44), (44, 54), (54, 64), (64, 74), (85, 140)]
+    # loop to append to payload object with name for age range and data for positives count
+    for [min_age, max_age] in age_sets:
+        # joined query on Visit table to get has_covid visits
+        # first filters by has covid and then applies distinct on visitor_id to
+        # count many true visitors visits as one
+        # then joins visitors table to filter based on age range
+        # then turns base query object to list object through .all()
+        positives = db.session.query(Visit.visitor_id.distinct()).filter_by(
+            has_covid=True
+        ).join(Visit.visitor).filter(
+            Visitor.age > min_age,
+            Visitor.age <= max_age
+        ).all()
+        # creates object data for age range
+        data = {
+            "name": f"{min_age}{'-' if min_age != 85 else '+'}{max_age if min_age != 85 else ''}",
+            "positive": len(positives)
+        }
+        # appends to payload
+        payload.append(data)
     return jsonify(payload), 200
 
 @app.route('/business', methods=['GET'])
