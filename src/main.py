@@ -64,7 +64,27 @@ def login():
 
 # if __name__ == '__main__':
 #     app.run()
+@app.route('/render_bar_chart', methods=['GET'])
+def get_bar_chart():
+    payload = []
+    positiveList = Visit.query.filter (
+        has_covid == True,
+        visitor.age <= 19
+    )
+        
+    data = {"name": "0-19", "positive":len(positiveList)}
+    payload.push (data)
 
+        
+    positiveList = Visit.query.filter (
+        has_covid == True,
+        visitor.age > 19 and visitor.age <=44
+    )
+        
+    data = {"name": "20-44", "positive":len(positiveList)}
+    payload.push (data)
+
+    return jsonify(payload), 200
 
 @app.route('/business', methods=['GET'])
 def get_all_business():
