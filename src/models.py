@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import timezone
 
 db = SQLAlchemy()
 
@@ -51,16 +52,15 @@ class Visitor(db.Model):
 
 class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.String(120), unique=True, nullable=False)
-    temperature = db.Column(db.String(120), unique=True, nullable=False)
+    temperature = db.Column(db.String(120), nullable=False)
     business_id = db.Column(db.Integer, db.ForeignKey(Business.id))
     visitor_id = db.Column(db.Integer, db.ForeignKey(Visitor.id),nullable=False)
-    entry_date = db.Column(db.DateTime(120), unique=False, nullable=False)
+    entry_date = db.Column(db.DateTime(timezone=True), unique=False, nullable=False)
     has_fever = db.Column(db.Boolean, unique=False, nullable=False, default=False)#
     has_covid = db.Column(db.Boolean , unique=False, nullable=False , default=False)#
     
     def __repr__(self):
-        return '<Visit %r>' % self.image
+        return f'<Visit {self.id},{self.entry_date}>'
 
     def serialize(self):
         return {

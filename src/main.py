@@ -2,6 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+from datetime import datetime
 from flask_admin.contrib.sqla import ModelView
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
@@ -132,16 +133,16 @@ def signup_visit():
     print(request_body)
 
     visit1 = Visit(
-        image=request_body["image"],
+        temperature=request_body["temperature"],
         business_id=request_body["business_id"],
         visitor_id=request_body["visitor_id"],
-        entry_date=request_body["entry_date"],
+        entry_date=datetime.strptime(request_body["entry_date"], "%a, %d %b %Y %H:%M:%S %Z"),
         has_fever=request_body["has_fever"],
         has_covid=request_body["has_covid"],
     )
     db.session.add(visit1)
     db.session.commit()
-    return jsonify(request_body),200
+    return jsonify(visit1.serialize()),200
 
 
 @app.route('/visitor', methods=['POST'])
