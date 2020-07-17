@@ -11,6 +11,7 @@ class Business(db.Model):
      email = db.Column(db.String(120), unique=True, nullable=False)
      password = db.Column(db.String(120), unique=False, nullable=False)#
      visits = db.relationship("Visit")
+     device = db.relationship("Device", backref="business", uselist = False)
 
      def __repr__(self):
         return '<Business %r>' % self.business_name
@@ -72,3 +73,14 @@ class Visit(db.Model):
             "business_id": self.business_id,
             "visitor_id": self.visitor_id
         }
+
+class Device(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    serial_number = db.Column(db.String(120), nullable=False, unique=True)
+    business_id = db.Column(db.Integer, db.ForeignKey(Business.id), nullable=True)
+    url = db.Column(db.String(240), unique=True, nullable=True)
+
+    def __init__(self,serial_number):   
+        self.serial_number = serial_number
+        
+    
