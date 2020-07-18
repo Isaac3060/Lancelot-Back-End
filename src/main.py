@@ -9,7 +9,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
-from models import db, Business, Visit, Visitor
+from models import db, Business, Visit, Visitor, Device
 from admin import setup_admin
 
 from flask_jwt_simple import (
@@ -196,6 +196,20 @@ def delete_info(business_id):
             db.session.delete(business_to_delete)
             db.session.commit()
             return jsonify(business_to_delete.serialize()), 204
+
+@app.route('/temperature', methods=['GET'])
+@jwt_required
+def get_temperature():
+    business_id = get_jwt_identity()
+    device = Device.query.filter_by(
+        business_id = business_id
+    ).one_or_none()
+    if device is None:
+        return "There is not device for thie business", 404 
+    else:  
+        #here is what we request our raspberry pi in order to take temperature
+        temperature = {"temperature":107}
+        return jsonify(temperature), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
