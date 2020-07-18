@@ -205,7 +205,7 @@ def get_temperature():
         business_id = business_id
     ).one_or_none()
     if device is None:
-        return "There is not device for thie business", 404 
+        return "There is not device for the business", 404 
     else:  
         #here is what we request our raspberry pi in order to take temperature
         temperature = {"temperature":107}
