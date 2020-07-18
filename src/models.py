@@ -13,7 +13,7 @@ class Business(db.Model):
      visits = db.relationship("Visit")
 
      def __repr__(self):
-        return '<Business %r>' % self.business_name
+        return f'<Business {self.id},{self.visits}>'
 
      def serialize(self):
         return {

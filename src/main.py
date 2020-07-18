@@ -54,10 +54,13 @@ def login():
     user= Business.query.filter_by(email=email, password= password).first()
     if user is None:
         return jsonify({"msg": "Bad email or password"}), 401
+    print (user)
 
     ret = {
         'jwt': create_jwt(identity=user.id),
-        "business_id": user.id
+        "business_id": user.id,
+        
+        
         }
     return jsonify(ret), 200
 
@@ -69,7 +72,7 @@ def login():
 def get_bar_chart():
     payload = []
     # age sets for loop, tuples with min age and max age for each set
-    age_sets = [(0, 19), (19, 44), (44, 54), (54, 64), (64, 74), (85, 140)]
+    age_sets = [(18, 29), (30, 39), (40, 49), (50, 59), (60, 64), (65, 69), (70,79), (80,120)]
     # loop to append to payload object with name for age range and data for positives count
     for [min_age, max_age] in age_sets:
         # joined query on Visit table to get has_covid visits
@@ -168,7 +171,7 @@ def update_visitor_info(visitor_id):
         print(request_body)
         visitor_1 = Visitor.query.get(visitor_id)
         visitor_1.email = request_body["email"]
-        visitor_1.address=reques_body["address"]
+        visitor_1.address=request_body["address"]
         db.session.commit()
         return jsonify(visitor_1.serialize()), 200  
 
