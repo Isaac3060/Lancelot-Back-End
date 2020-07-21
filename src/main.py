@@ -107,6 +107,13 @@ def get_all_visit():
         payload = list(map(lambda biz: biz.serialize(), visitList))
         return jsonify(payload), 200
 
+@app.route('/visitor/<email>', methods=['GET'])
+def get_single_visitor(email):
+        visitor_1 = Visitor.query.filter_by(email=email).first()
+        if visitor_1 is None:
+            return "Not found", 404
+        return jsonify(visitor_1.serialize()), 200
+
 @app.route('/visitor', methods=['GET'])
 def get_all_visitors():
         visitorsList = Visitor.query.all()
