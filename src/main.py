@@ -179,6 +179,7 @@ def update_visitor_info(visitor_id):
         visitor_1 = Visitor.query.get(visitor_id)
         visitor_1.email = request_body["email"]
         visitor_1.address=request_body["address"]
+        visitor_1.age=request_body["age"]
         db.session.commit()
         return jsonify(visitor_1.serialize()), 200  
 
