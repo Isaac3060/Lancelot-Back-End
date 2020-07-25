@@ -138,13 +138,14 @@ def signup_business():
 
 
 @app.route('/visit', methods=['POST'])
+@jwt_required
 def signup_visit():
     request_body= request.get_json()
     print(request_body)
 
     visit1 = Visit(
         temperature=request_body["temperature"],
-        business_id=request_body["business_id"],
+        business_id=get_jwt_identity(),
         visitor_id=request_body["visitor_id"],
         entry_date=datetime.strptime(request_body["entry_date"], "%a, %d %b %Y %H:%M:%S %Z"),
         has_fever=request_body["has_fever"],
@@ -170,7 +171,7 @@ def create_new_visitor():
     )
     db.session.add(visitor1)
     db.session.commit()
-    return jsonify(request_body),200
+    return jsonify(visitor1.serialize()),200
 
 @app.route('/visitor/<int:visitor_id>', methods=['PUT'])
 def update_visitor_info(visitor_id):
@@ -209,15 +210,10 @@ def delete_info(business_id):
 @jwt_required
 def get_temperature():
     business_id = get_jwt_identity()
-    device = Device.query.filter_by(
-        business_id = business_id
-    ).one_or_none()
-    if device is None:
-        return "There is not device for the business", 404 
-    else:  
-        #here is what we request our raspberry pi in order to take temperature
-        temperature = {"temperature":107}
-        return jsonify(temperature), 200
+      
+    #here is what we request our raspberry pi in order to take temperature
+    temperature = {"temperature":107}
+    return jsonify(temperature), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
