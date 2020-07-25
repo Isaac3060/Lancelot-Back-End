@@ -171,7 +171,7 @@ def create_new_visitor():
     )
     db.session.add(visitor1)
     db.session.commit()
-    return jsonify(visitor1.serialize()),200
+    return jsonify(visitor1.serialize),200
 
 @app.route('/visitor/<int:visitor_id>', methods=['PUT'])
 def update_visitor_info(visitor_id):
