@@ -83,7 +83,7 @@ def get_bar_chart():
         positives = db.session.query(Visit.visitor_id.distinct()).filter_by(
             has_covid=True
         ).join(Visit.visitor).filter(
-            Visitor.age > min_age,
+            Visitor.age >= min_age,
             Visitor.age <= max_age
         ).all()
         # creates object data for age range
