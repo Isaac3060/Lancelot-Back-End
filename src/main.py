@@ -101,6 +101,14 @@ def get_all_business():
         payload = list(map(lambda biz: biz.serialize(), businessList))
         return jsonify(payload), 200
 
+@app.route('/business/<int:business_id>', methods=['GET'])
+def get_info(business_id):
+        business_1 = Business.query.get(business_id)
+        if business_1 is None:
+            raise APIException('Business not found', status_code=404)
+        return jsonify(business_1.serialize()), 200
+
+
 @app.route('/visit', methods=['GET'])
 def get_all_visit():
         visitList = Visit.query.all()
