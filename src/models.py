@@ -71,7 +71,9 @@ class Visit(db.Model):
             "has_fever": self.has_fever,
             "has_covid": self.has_covid,
             "business_id": self.business_id,
-            "visitor_id": self.visitor_id
+            "visitor_id": self.visitor_id,
+            "full_name" : f"{self.visitor.first_name} {self.visitor.last_name}",
+            "visitor_email": self.visitor.email
         }
 
 class Device(db.Model):
